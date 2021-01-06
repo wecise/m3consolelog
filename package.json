@@ -9,15 +9,23 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "vue": "^2.6.11"
+    "element-ui": "^2.4.5",
+    "emmet": "github:cloud9ide/emmet-core#41973fcc70392864c7a469cf5dcd875b88b93d4a",
+    "lodash": "^4.17.20",
+    "moment": "^2.29.1",
+    "vue": "^2.6.11",
+    "vue2-ace-editor": "^0.0.15"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
+    "axios": "^0.18.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
+    "vue-cli-plugin-axios": "^0.0.4",
+    "vue-cli-plugin-element": "^1.0.1",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {
