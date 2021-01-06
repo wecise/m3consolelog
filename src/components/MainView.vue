@@ -13,9 +13,12 @@
     <el-main>
       <div class="editor-toolbar">
         <el-button-group>
-          <el-button type="default" icon="el-icon-edit"></el-button>
-          <el-button type="default" icon="el-icon-share"></el-button>
-          <el-button type="default" icon="el-icon-delete"></el-button>
+          <el-button type="default" icon="el-icon-d-arrow-left"></el-button>
+          <el-button type="default" icon="el-icon-d-arrow-right"></el-button>
+          <el-button type="default" icon="el-icon-caret-top"></el-button>
+          <el-button type="default" icon="el-icon-caret-bottom"></el-button>
+          <el-button type="default" icon="el-icon-arrow-up"></el-button>
+          <el-button type="default" icon="el-icon-arrow-down"></el-button>
         </el-button-group>
       </div>
       <editor v-model="editor.content" @init="editorInit" lang="toml" theme="chrome" width="95vw" height="500px"></editor>
@@ -71,6 +74,8 @@ export default {
                     return `[${v.level}]  ${v.msg}`;
                 })).join('\n');
                 this.editor.content = csv;
+            } else {
+              this.editor.content = "";
             }
             
         },
@@ -81,9 +86,16 @@ export default {
           if(val !== oldVal && !_.isEmpty(val)){
               let info = val.split(":");
               this.editor.info.page = info[0];
-              this.editor.info.time = this.moment(info[1]).format("YYYY-MM-DD");
+              this.editor.info.time = this.moment(Number(info[1])).format('LLL');
               this.editor.info.currentPage = info[2];
               this.editor.info.count = info[3];
+          } else {
+            this.editor.info =  {
+              page: null,
+              time: null,
+              currentPage: 1,
+              count: 0
+            };
           }
           
       }
@@ -167,5 +179,8 @@ export default {
   .editor-toolbar{
     padding: 0 0 10px 0;
     float: left;
+  }
+  .el-input-group__prepend > .el-select{
+    width: 120px;
   }
 </style>
