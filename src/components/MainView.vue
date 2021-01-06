@@ -12,16 +12,42 @@
     </el-header>
     <el-main>
       <div class="editor-toolbar">
-        <el-button-group>
-          <el-button type="default" icon="el-icon-d-arrow-left"></el-button>
-          <el-button type="default" icon="el-icon-d-arrow-right"></el-button>
-          <el-button type="default" icon="el-icon-caret-top"></el-button>
-          <el-button type="default" icon="el-icon-caret-bottom"></el-button>
-          <el-button type="default" icon="el-icon-arrow-up"></el-button>
-          <el-button type="default" icon="el-icon-arrow-down"></el-button>
-        </el-button-group>
+        <div class="button-group">
+          <el-button-group>
+            <el-button type="default" icon="el-icon-d-arrow-left">首页</el-button>
+            <el-button type="default" >尾页<i class="el-icon-d-arrow-right el-icon--right"></i></el-button>
+          </el-button-group>
+          
+          <el-button-group>
+            <el-button type="default" icon="el-icon-caret-top">上一页</el-button>
+            <el-button type="default">下一页<i class="el-icon-caret-bottom el-icon--right"></i></el-button>
+          </el-button-group>
+          
+          <el-button-group>
+            <el-button type="default" icon="el-icon-arrow-up">上一条</el-button>
+            <el-button type="default">下一条<i class="el-icon-arrow-down el-icon--right"></i></el-button>
+          </el-button-group>
+        </div>
+        <el-dropdown>
+          <span class="el-dropdown-link">
+            <i class="el-icon-s-tools el-icon--right"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item v-for="group in editor.theme.list" :key="group.name">
+                <el-dropdown @command="onCommand">
+                    <span class="el-dropdown-link">
+                      {{group.name}} <i class="el-icon-arrow-down el-icon--right"></i>
+                    </span>
+                    <el-dropdown-menu slot="dropdown">
+                      <el-dropdown-item v-for="item in group.items" :key="item.name" :command="item.name">{{item.name}}</el-dropdown-item>
+                    </el-dropdown-menu>
+                  </el-dropdown>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+        
       </div>
-      <editor v-model="editor.content" @init="editorInit" lang="toml" theme="chrome" width="95vw" height="500px"></editor>
+      <editor v-model="editor.content" @init="editorInit" lang="toml" :theme="editor.theme.value" width="100%" height="calc(100vh - 210px)"></editor>
     </el-main>
     <el-footer>
         {{editor.info.page}} {{editor.info.time}} {{editor.info.currentPage}} {{editor.info.count}}
@@ -53,6 +79,53 @@ export default {
           time: null,
           currentPage: 1,
           count: 0
+        },
+        theme:{
+          value: "monokai",
+          list: [{ name: "亮色", items: [
+                          { name: "chrome"},
+                          { name: "clouds"},
+                          { name: "crimson_editor"},
+                          { name: "dawn"},
+                          { name: "dreamweaver"},
+                          { name: "eclipse"},
+                          { name: "github"},
+                          { name: "iplastic"},
+                          { name: "solarized_light"},
+                          { name: "textmate"},
+                          { name: "tomorrow"},
+                          { name: "xcode"},
+                          { name: "kuroir"},
+                          { name: "katzenmilch"},
+                          { name: "sqlserver"}
+                    ]
+                  },
+                  { name: "暗色", items: [
+                          { name: "ambiance"},
+                          { name: "chaos"},
+                          { name: "clouds_midnight"},
+                          { name: "dracula"},
+                          { name: "cobalt"},
+                          { name: "gruvbox"},
+                          { name: "gob"},
+                          { name: "idle_fingers"},
+                          { name: "kr_theme"},
+                          { name: "merbivore"},
+                          { name: "merbivore_soft"},
+                          { name: "mono_industrial"},
+                          { name: "monokai"},
+                          { name: "pastel_on_dark"},
+                          { name: "solarized_dark"},
+                          { name: "terminal"},
+                          { name: "tomorrow_night"},
+                          { name: "tomorrow_night_blue"},
+                          { name: "tomorrow_night_bright"},
+                          { name: "tomorrow_night_eighties"},
+                          { name: "twilight"},
+                          { name: "vibrant_ink"}
+                    ]
+                  }
+        ]
         }
       },
       dt: {
@@ -154,6 +227,11 @@ export default {
         .then(() => {
 
         });
+    },
+    onCommand(val){
+      console.log(val)
+      require(`brace/theme/${val}`);
+      this.editor.theme.value = val;
     }
   }
 }
@@ -170,16 +248,38 @@ export default {
     margin: 0 20px;
     padding: 0px;
   }
+
   .el-footer{
     line-height: 60px;
     margin: 0 20px;
     background: #f2f2f2;
     text-align: left;
   }
+
   .editor-toolbar{
     padding: 0 0 10px 0;
     float: left;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    display: flex;
   }
+
+  .editor-toolbar > .button-group{
+    width: 90%;
+    text-align: left;
+  }
+
+  .el-button-group + .el-button-group{
+    padding-left: 10px;
+  }
+
+  .editor-toolbar > .el-dropdown{
+    text-align: right;
+    width: 9%;
+    margin-right: 10px;
+  }
+
   .el-input-group__prepend > .el-select{
     width: 120px;
   }
