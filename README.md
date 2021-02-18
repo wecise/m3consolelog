@@ -1,4 +1,4 @@
-# mxconsolelog
+# m3consolelog
 
 ## Project setup
 ```
