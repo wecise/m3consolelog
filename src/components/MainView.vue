@@ -29,15 +29,15 @@
       <div class="editor-toolbar">
         <el-row style="width:100%;">
             <el-col :span="2">
-                <el-tooltip content="重新加载" open-delay="800">
+                <el-tooltip content="重新加载" >
                     <el-button type="text" @click="onLoad" icon="el-icon-refresh"></el-button>
                 </el-tooltip>    
 
-                <el-tooltip content="删除" open-delay="800">
+                <el-tooltip content="删除" >
                     <el-button type="text" @click="onDelete" icon="el-icon-close"></el-button>
                 </el-tooltip>
 
-                <el-tooltip content="清空" open-delay="800">
+                <el-tooltip content="清空" >
                     <el-button type="text" @click="onTruncate" icon="el-icon-delete"></el-button>
                 </el-tooltip>
             </el-col>
@@ -57,7 +57,7 @@
                     inactive-value="0">
                 </el-switch>
             
-                <el-tooltip content="选择主题" placement="bottom" open-delay="800">
+                <el-tooltip content="选择主题" placement="bottom" >
                     <el-dropdown style="padding-left:10px;">
                       <span class="el-dropdown-link">
                         <i class="el-icon-s-tools el-icon--right"></i>
@@ -105,10 +105,10 @@
       <editor
         v-model="editor.content"
         @init="editorInit"
-        lang="toml"
+        :lang="editor.lang.value"
         :theme="editor.theme.value"
         width="100%"
-        height="calc(100vh - 190px)"
+        height="calc(100vh - 240px)"
       ></editor>
     </el-main>
     <el-footer>
@@ -190,6 +190,9 @@ export default {
           time: null,
           currentPage: 1,
           count: 0,
+        },
+        lang: {
+          value: "json"
         },
         theme: {
           value: "chrome",
@@ -300,12 +303,9 @@ export default {
   methods:{
       editorInit() {
         require("brace/ext/language_tools"); //language extension prerequsite...
-        require("brace/mode/html");
-        require("brace/mode/toml");
-        require("brace/mode/javascript"); //language
-        require("brace/mode/less");
-        require("brace/theme/chrome");
-        require("brace/snippets/javascript"); //snippet
+        require(`brace/mode/${this.editor.lang.value}`); //language
+        require(`brace/snippets/${this.editor.lang.value}`); //snippet
+        require(`brace/theme/${this.editor.theme.value}`); //language
       },
       onSearch() {
         this.onLoad();
